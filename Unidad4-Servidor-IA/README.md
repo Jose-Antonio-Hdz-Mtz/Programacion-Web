@@ -73,3 +73,5 @@ Google AI Studio es una plataforma para probar y desarrollar aplicaciones con mo
 Las APIs de IA funcionan de manera diferente a las APIs tradicionales porque generan contenido dinámicamente. Además, es importante proteger las API Keys usando un backend seguro.
 
 Google AI Studio facilita el desarrollo y pruebas de aplicaciones con inteligencia artificial.
+## Despliegue
+Proyecto desplegado en InfinityFree.
