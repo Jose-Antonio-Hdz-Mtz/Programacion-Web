@@ -1,0 +1,11 @@
+{
+  "functions": {
+    "api/procesar.php": {
+      "runtime": "vercel-php@0.7.2"
+    }
+  },
+  "routes": [
+    { "src": "/procesar.php", "dest": "/api/procesar.php" },
+    { "src": "/(.*)", "dest": "/$1" }
+  ]
+}
