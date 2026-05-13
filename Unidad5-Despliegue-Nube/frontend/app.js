@@ -8,7 +8,7 @@
 // ── Configuración ────────────────────────────────────────────
 const CONFIG = {
     // URL del backend. Cambiar en producción al dominio de Render/Vercel
-    API_URL : 'http://localhost:3000/procesar',
+    API_URL: 'https://programacion-web-0.onrender.com/procesar',
     MAX_CHARS: 5000
 };
 
