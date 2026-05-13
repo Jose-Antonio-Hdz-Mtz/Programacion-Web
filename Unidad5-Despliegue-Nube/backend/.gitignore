@@ -1,0 +1,12 @@
+# Variables de entorno — NUNCA subir a Git
+.env
+
+# Dependencias
+node_modules/
+
+# Logs
+npm-debug.log*
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
