@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<!--
+    ============================================================
+    frontend/index.html — Interfaz de usuario para Gemini AI
+    Práctica Full Stack: Node.js + Express + Gemini API
+    
+    Características:
+      - Dark mode por defecto con toggle
+      - Historial de conversaciones
+      - Loader animado mientras Gemini responde
+      - Validaciones de entrada
+      - Diseño glassmorphism con micro-animaciones
+    ============================================================
+-->
+<html lang="es" data-theme="dark">
+<head>
+    <!-- ── Codificación y viewport ── -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ── SEO ── -->
+    <title>Gemini AI Studio | Práctica Full Stack Node.js</title>
+    <meta name="description"
+          content="Aplicación Full Stack que integra Node.js, Express y la API de Gemini para generar respuestas de inteligencia artificial en tiempo real.">
+    <meta name="keywords"
+          content="Gemini, Google AI, Node.js, Express, API, Full Stack, Programación Web">
+
+    <!-- ── Tipografía moderna desde Google Fonts ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- ── Hoja de estilos ── -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ══════════════════════════════════════════════════════
+         HEADER — Barra de navegación superior
+    ══════════════════════════════════════════════════════════ -->
+    <header class="navbar" id="navbar">
+        <div class="navbar-brand">
+            <!-- Logo animado -->
+            <div class="logo-icon" aria-hidden="true">
+                <span class="logo-spark">✦</span>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">Gemini AI Studio</span>
+                <span class="brand-sub">Práctica Full Stack · Node.js + Gemini</span>
+            </div>
+        </div>
+
+        <nav class="navbar-actions">
+            <!-- Indicador de estado del backend -->
+            <div class="status-badge" id="status-badge" title="Estado del backend">
+                <span class="status-dot" id="status-dot"></span>
+                <span class="status-text" id="status-text">Verificando…</span>
+            </div>
+
+            <!-- Toggle de tema claro/oscuro -->
+            <button
+                class="theme-toggle"
+                id="btn-theme"
+                aria-label="Cambiar tema"
+                title="Alternar modo oscuro/claro"
+            >
+                <span class="theme-icon" id="theme-icon">☀️</span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════
+         CONTENIDO PRINCIPAL
+    ══════════════════════════════════════════════════════════ -->
+    <main class="main-container">
+
+        <!-- Panel izquierdo: formulario de entrada -->
+        <section class="panel panel-input" aria-label="Panel de entrada">
+
+            <!-- Título de la sección -->
+            <div class="panel-header">
+                <h1 class="panel-title">
+                    <span class="title-icon" aria-hidden="true">💬</span>
+                    Consulta a Gemini
+                </h1>
+                <p class="panel-subtitle">
+                    Escribe cualquier pregunta o texto y la IA generará una respuesta personalizada.
+                </p>
+            </div>
+
+            <!-- Formulario principal -->
+            <form id="form-gemini" novalidate>
+
+                <!-- Campo de texto principal -->
+                <div class="field-group" id="field-group-texto">
+                    <label class="field-label" for="texto-input">
+                        Tu mensaje
+                        <span class="char-count" id="char-count">0 / 5000</span>
+                    </label>
+                    <textarea
+                        id="texto-input"
+                        name="texto"
+                        class="field-textarea"
+                        placeholder="Ejemplo: ¿Cuáles son las mejores prácticas en Node.js para APIs REST? Explica con ejemplos..."
+                        rows="8"
+                        maxlength="5000"
+                        required
+                        aria-describedby="texto-error"
+                    ></textarea>
+                    <!-- Mensaje de error de validación -->
+                    <span class="field-error" id="texto-error" role="alert" aria-live="polite"></span>
+                </div>
+
+                <!-- Opciones adicionales -->
+                <div class="form-options">
+                    <!-- Selector de modo/contexto -->
+                    <div class="option-group">
+                        <label class="field-label" for="modo-select">Modo de respuesta</label>
+                        <select id="modo-select" class="field-select">
+                            <option value="general">General</option>
+                            <option value="tecnico" selected>Técnico / Programación</option>
+                            <option value="academico">Académico</option>
+                            <option value="creativo">Creativo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botón de envío -->
+                <button
+                    type="submit"
+                    id="btn-procesar"
+                    class="btn-primary"
+                    aria-label="Procesar texto con Gemini AI"
+                >
+                    <span class="btn-icon" aria-hidden="true">🚀</span>
+                    <span class="btn-text">Procesar con Gemini</span>
+                    <!-- Loader (oculto por defecto) -->
+                    <span class="btn-loader" id="btn-loader" aria-hidden="true"></span>
+                </button>
+
+            </form><!-- /#form-gemini -->
+
+            <!-- Ejemplos rápidos de prompts -->
+            <div class="quick-prompts">
+                <p class="quick-title">Ejemplos rápidos:</p>
+                <div class="quick-chips">
+                    <button class="chip" data-prompt="¿Qué es una API REST y cómo funciona?">API REST</button>
+                    <button class="chip" data-prompt="Explica async/await en JavaScript con un ejemplo práctico">Async/Await JS</button>
+                    <button class="chip" data-prompt="¿Cuál es la diferencia entre SQL y NoSQL?">SQL vs NoSQL</button>
+                    <button class="chip" data-prompt="¿Cómo funciona el protocolo HTTP? Explica los métodos GET y POST">HTTP GET/POST</button>
+                    <button class="chip" data-prompt="Explica qué son las variables de entorno y por qué son importantes para la seguridad">Variables de entorno</button>
+                </div>
+            </div>
+
+        </section><!-- /.panel-input -->
+
+        <!-- Panel derecho: respuestas e historial -->
+        <section class="panel panel-output" aria-label="Panel de respuestas">
+
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <span class="title-icon" aria-hidden="true">🤖</span>
+                    Respuesta de Gemini
+                </h2>
+                <!-- Controles del panel -->
+                <div class="panel-controls">
+                    <button class="btn-icon-only" id="btn-clear-history" title="Limpiar historial" aria-label="Limpiar historial">
+                        🗑️
+                    </button>
+                    <button class="btn-icon-only" id="btn-copy-last" title="Copiar última respuesta" aria-label="Copiar última respuesta">
+                        📋
+                    </button>
+                </div>
+            </div>
+
+            <!-- Área de respuestas / historial -->
+            <div class="responses-container" id="responses-container" role="log" aria-live="polite" aria-label="Historial de respuestas">
+
+                <!-- Estado vacío (placeholder) -->
+                <div class="empty-state" id="empty-state">
+                    <div class="empty-icon" aria-hidden="true">🌟</div>
+                    <p class="empty-title">Listo para responder</p>
+                    <p class="empty-subtitle">
+                        Escribe tu pregunta en el panel izquierdo y presiona <strong>Procesar</strong> para comenzar.
+                    </p>
+                </div>
+
+            </div><!-- /#responses-container -->
+
+            <!-- Metadatos de la última respuesta -->
+            <div class="response-meta" id="response-meta" style="display:none">
+                <span class="meta-item">
+                    <span class="meta-icon">🤖</span>
+                    Modelo: <strong id="meta-modelo">—</strong>
+                </span>
+                <span class="meta-separator">·</span>
+                <span class="meta-item">
+                    <span class="meta-icon">🔢</span>
+                    Tokens: <strong id="meta-tokens">—</strong>
+                </span>
+                <span class="meta-separator">·</span>
+                <span class="meta-item">
+                    <span class="meta-icon">🕒</span>
+                    <strong id="meta-tiempo">—</strong>
+                </span>
+            </div>
+
+        </section><!-- /.panel-output -->
+
+    </main><!-- /.main-container -->
+
+    <!-- ══════════════════════════════════════════════════════
+         FOOTER
+    ══════════════════════════════════════════════════════════ -->
+    <footer class="footer">
+        <div class="footer-content">
+            <span>Práctica Full Stack — Unidad 4 · Programación Web</span>
+            <span class="footer-sep">·</span>
+            <span>Node.js + Express + Gemini AI</span>
+            <span class="footer-sep">·</span>
+            <span>José Antonio Hdz Mtz</span>
+        </div>
+    </footer>
+
+    <!-- ══════════════════════════════════════════════════════
+         JAVASCRIPT — Lógica del frontend
+    ══════════════════════════════════════════════════════════ -->
+    <script src="app.js"></script>
+
+</body>
+</html>
